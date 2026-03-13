@@ -20,16 +20,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config(SECRET_KEY)
-
+SECRET_KEY = "django-insecure-#wc1+hj7vl+-+!q6l+3n7*t_kk8q!vyuov&&&er)yzdrl1_s0*"
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config(DEBUG, cast=bool)
+DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = []
 
 
-GITHUB_TOKEN = config(GITHUB_TOKEN)
-GITHUB_MODELS_BASE_URL = config(GITHUB_MODELS_BASE_URL)
+GITHUB_TOKEN = config('GITHUB_TOKEN', default='')
+GITHUB_MODELS_BASE_URL = config('GITHUB_MODELS_BASE_URL', default='')
 # Application definition
 
 INSTALLED_APPS = [
