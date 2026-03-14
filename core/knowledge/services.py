@@ -23,7 +23,7 @@ class DocumentProcessor:
         self.embeddings = OpenAIEmbeddings(
             openai_api_key=settings.GITHUB_TOKEN,
             openai_api_base=settings.GITHUB_MODELS_BASE_URL,
-            model="text-embedding-ada-002"
+            model="text-embedding-3-small"
         )
 
         # How to split documents into chunks
@@ -72,7 +72,7 @@ class DocumentProcessor:
                 AssetChunk(
                     asset=self.asset,
                     content=chunk.page_content,
-                    embedding=embeddings,
+                    embedding=embedding,
                     chunk_index=i,
                     metadata={
                         'page': chunk.metadata.get('page',0),

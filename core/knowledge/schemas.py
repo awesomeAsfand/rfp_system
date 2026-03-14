@@ -1,9 +1,10 @@
 from ninja import Schema
 from datetime import datetime
 from typing import Optional
+from uuid import UUID
 
 class AssetOut(Schema):
-    id: str
+    id: UUID
     title: str
     asset_type: str
     status: str
@@ -16,7 +17,7 @@ class AssetOut(Schema):
         from_attributes = True
 
 class AssetListOut(Schema):
-    id: str
+    id: UUID
     title: str
     asset_type: str
     status: str

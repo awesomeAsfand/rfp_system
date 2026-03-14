@@ -55,11 +55,11 @@ class AssetChunk(models.Model):
     chunk_index = models.IntegerField()
     metadata = models.JSONField(default=dict)
 
-class Meta:
-    ordering = ['asset', 'chunk_index']
+    class Meta:
+        ordering = ['asset', 'chunk_index']
 
-def __str__(self):
-    return f"Chunk {self.chunk_index} of {self.asset.title}"
+    def __str__(self):
+        return f"Chunk {self.chunk_index} of {self.asset.title}"
 
 
 

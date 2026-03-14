@@ -16,7 +16,8 @@ def process_knowledge_asset(self, asset_id:str):
         asset.save()
 
         processor = DocumentProcessor(asset)
-        chunk_count = processor.porcess()
+        chunk_count = processor.process()
+        
 
         asset.status = KnowledgeAsset.Status.READY
         asset.chunk_count = chunk_count
@@ -28,12 +29,12 @@ def process_knowledge_asset(self, asset_id:str):
     except KnowledgeAsset.DoesNotExist:
         logger.error(f"Asset {asset_id} not found")
     except Exception as exc:
-        logger.error(f"failed to process asses{asset.id}:{exc}")
-    
-    try:
-        raise self.retry(exc=exc, countdown=60*(2 ** self.max_retries))
-    except self.MaxRetriesExceededError:
-        asset = KnowledgeAsset.objects.get(id=asset_id)
-        asset.status = KnowledgeAsset.Status.FAILED
-        asset.error_message = str(exc)
-        asset.save()
+        logger.error(f"failed to process asset{asset.id}:{exc}")
+
+        try:
+            raise self.retry(exc=exc, countdown=60*(2 ** self.max_retries))
+        except self.MaxRetriesExceededError:
+            asset = KnowledgeAsset.objects.get(id=asset_id)
+            asset.status = KnowledgeAsset.Status.FAILED
+            asset.error_message = str(exc)
+            asset.save()
