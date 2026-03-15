@@ -39,8 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'knowledge',
-    'pgvector'
-
+    'pgvector',
+    'rfp',
 ]
 
 MIDDLEWARE = [
