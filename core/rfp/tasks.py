@@ -15,7 +15,7 @@ def process_rfp_document(self, rfp_id:str):
 
         processor = RFPProcessor(rfp)
         count = processor.process()
-        rfp.status = RFPDocument.States.EXTRACTED
+        rfp.status = RFPDocument.Status.EXTRACTED
         rfp.requirement_count=count
         rfp.processed_at = timezone.now()
         rfp.save()

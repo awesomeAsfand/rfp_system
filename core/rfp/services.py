@@ -10,14 +10,13 @@ logger = logging.getLogger(__name__)
 
 class RFPProcessor:
     MAX_CHAR_PER_PASS = 80000
-
-
     def __init__(self, rfp_document):
-        rfp_document = self.rfp_document
+        self.rfp = rfp_document
         self.llm = ChatOpenAI(
             model = "openai/o4-mini",
             temperature=0,
-            openai_api_key=settings.GITHUB_TOKEN
+            openai_api_key=settings.GITHUB_TOKEN,          
+            openai_api_base=settings.GITHUB_MODELS_BASE_URL
         )
 
         self.structured_llm = self.llm.with_structured_output(ExtractionResult)
@@ -31,7 +30,7 @@ class RFPProcessor:
         logger.info(f"Loaded RFP: {len(raw_text)} characters")
 
         all_requirements= []
-        if len(raw_text) < MAX_CHAR_PER_PASS:
+        if len(raw_text) <= self.MAX_CHAR_PER_PASS:
             result = self._extract_requirements(raw_text)
             all_requirements = result.requirements
         else:
@@ -42,7 +41,7 @@ class RFPProcessor:
 
     def _load_document(self)->str:
         file_path = self.rfp.file.path
-        extension = os.path.splitdrive(file_path)[-1].lower()
+        extension = os.path.splitext(file_path)[-1].lower()
         if extension == ".pdf":
             loader = PyPDFLoader(file_path)
         elif extension in ['.docx', 'doc']:
@@ -98,7 +97,7 @@ class RFPProcessor:
         overlap = 2000
         start = 0
         while start < len(text):
-            end = start + MAX_CHAR_PER_PASS
+            end = start + self.MAX_CHAR_PER_PASS
             sections.append(text[start:end])
             start = end - overlap
         logger.info(f"larger documnet processing in{len(sections)} sections")
@@ -142,7 +141,7 @@ class RFPProcessor:
         return unique
 
     def _save_requirements(self, requirements: list):
-        from .models import Requirements
+        from .models import Requirement
         Requirement.objects.filter(rfp=self.rfp).delete()
 
         db_requirements = []

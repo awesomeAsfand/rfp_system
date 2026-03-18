@@ -26,7 +26,7 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = []
 
-
+OPENAI_API_KEY = config('OPENAI_API_KEY', default='')
 GITHUB_TOKEN = config('GITHUB_TOKEN', default='')
 GITHUB_MODELS_BASE_URL = config('GITHUB_MODELS_BASE_URL', default='')
 # Application definition
